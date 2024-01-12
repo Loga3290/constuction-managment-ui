@@ -1,0 +1,9 @@
+:host ::ng-deep .prime-slider-override{
+    width: 42em !important;
+}
+.labelclass{
+    font-size: x-large;
+    padding: 3px;
+    font-style: italic;
+    font-family: cursive;
+}

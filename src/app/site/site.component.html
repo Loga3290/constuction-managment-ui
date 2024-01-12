@@ -1,0 +1,81 @@
+<div class="card">
+    <p-messages></p-messages>
+</div>
+<p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
+        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+    </ng-template>
+</p-toolbar>
+
+<p-table #dt *ngIf="sites.length != 0" [value]="sites" [rows]="10" [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']"
+    [(selection)]="selectedSites" [rowHover]="true" dataKey="id"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+            <h5 class="m-0">Manage Sites</h5>
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
+            </span>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+            <th pSortableColumn="location">Location <p-sortIcon field="location"></p-sortIcon></th>
+            <th pSortableColumn="accountNo">Account no<p-sortIcon field="accountNo"></p-sortIcon></th>
+            <th pSortableColumn="bankName">Bank name<p-sortIcon field="bankName"></p-sortIcon></th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+        <tr>
+            <td><a style="text-decoration: underline;color: blue;cursor: pointer;" [routerLink]="[ '/sitedetails',product.id]"><b>{{product.clientName}}</b></a></td>
+            <td>{{product.location}}</td>
+            <td>{{product.accountNo}}</td>
+            <td>{{product.bankName}}</td>
+            <td style="float: right;">
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(product)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(product)"></button>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+            In total there are {{products ? products.length : 0 }} products.
+        </div>
+    </ng-template>
+</p-table>
+
+<p-dialog [(visible)]="siteDialog" [style]="{width: '450px'}" header="Site Details" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="name" style="float: left;">Name :</label><h5 style="margin-left: 12%; color: red;">*</h5>
+            <input type="text" pInputText id="name" [(ngModel)]="site.clientName" required autofocus />
+            <small class="p-error" *ngIf="submitted && !site.clientName">Name is required.</small>
+        </div>
+        <div class="p-field">
+            <br>
+            <label for="location" style="float: left;">Location :</label>
+            <input type="text" pInputText id="location" [(ngModel)]="site.location" autofocus />
+            <br>
+        </div>
+        <div class="p-field">
+            <label for="accountNo" style="float: left;">Account No :</label><h5 style="margin-left: 12%; color: red;">*</h5>
+            <input type="number" id="accountNo" pInputText [(ngModel)]="site.accountNo" id="accountNo" />
+            <small class="p-error" *ngIf="submitted && !site.accountNo">Name is required.</small>
+        </div>
+        <div class="p-field">
+            <label for="name" style="float: left;">Account Name:</label><h5 style="margin-left: 12%; color: red;">*</h5>
+            <input type="text" pInputText id="bankName" [(ngModel)]="site.bankName" required autofocus />
+            <small class="p-error" *ngIf="submitted && !site.bankName">Name is required.</small>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}" ></p-confirmDialog>

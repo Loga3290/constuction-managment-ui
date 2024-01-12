@@ -1,0 +1,70 @@
+<div style="margin-left: 4%; width: 86%;background-color: beige;font-family: 'Times New Roman', Times, serif;">
+    <br />
+    <h1 style="text-align: center;vertical-align: middle;font-size: 3em">Annai Constructions</h1>
+    <br />
+</div>
+
+<div style="width: 100%;margin-top: 1%;">
+    <div class="card flex justify-content-center" style="width: 20%;float: left;">
+        <div class="card">
+            <div style="width: 100%;">
+                <p-toast></p-toast>
+                <button type="button" pButton pRipple [routerLink]="'/labour'" label="Labour"
+                    class="p-button-success" style="width: 100%;"></button>
+            </div>
+            <br/>
+           
+            <div style="width: 100%;">
+                <p-toast></p-toast>
+                <button type="button" pButton pRipple [routerLink]="'/site'"  label="Site"
+                    class="p-button-success" style="width: 100%;"></button>
+            </div>
+            <br/>
+            <div style="width: 100%;">
+                <p-toast></p-toast>
+                <button type="button" pButton pRipple [routerLink]="'/material'" label="Material"
+                    class="p-button-success" style="width: 100%;"></button>
+            </div>
+            <br/>
+            <div style="width: 100%;">
+                <p-toast></p-toast>
+                <button type="button" pButton pRipple [routerLink]="'/supplier'" label="Supplier"
+                    class="p-button-success" style="width: 100%;"></button>
+            </div>
+            <br/>
+            <div style="width: 100%;">
+                <p-toast></p-toast>
+                <button type="button" pButton pRipple [routerLink]="'/labourentry'" label="LabourEntry"
+                    class="p-button-success" style="width: 100%;"></button>
+            </div>
+            <br/>
+            <div style="width: 100%;">
+                <p-toast></p-toast>
+                <button type="button" pButton pRipple [routerLink]="'/supplierentry'" label="SupplierEntry"
+                    class="p-button-success" style="width: 100%;"></button>
+            </div>
+            <br/>
+            <div style="width: 100%;">
+                <p-toast></p-toast>
+                <button type="button" pButton pRipple [routerLink]="'/holisticview'"  label="Labour Weekly View"
+                    class="p-button-success" style="width: 100%;"></button>
+            </div>
+            <br>
+            <div style="width: 100%;">
+                <p-toast></p-toast>
+                <button type="button" pButton pRipple [routerLink]="'/supplierholisticview'" label="Supplier Weekly View"
+                    class="p-button-success" style="width: 100%;"></button>
+            </div>
+            
+        </div>
+    </div>
+    <div style="float: left;width: 70%;">
+        <router-outlet></router-outlet>
+        <!-- <app-labour *ngIf="showLabour"></app-labour>
+        <app-site *ngIf="showSite"></app-site>
+        <app-entry *ngIf="showEntry"></app-entry>
+        <app-holistic-view *ngIf="showHolisticView"></app-holistic-view>
+        <app-holistic-view *ngIf="showMaterial"></app-holistic-view>
+        <app-holistic-view *ngIf="showSupplierEntry"></app-holistic-view> -->
+    </div>
+</div>

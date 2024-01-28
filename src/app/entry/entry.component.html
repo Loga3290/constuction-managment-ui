@@ -22,7 +22,7 @@
     <ng-template pTemplate="header">
         <tr>
             <th pSortableColumn="name">Client Name<p-sortIcon field="name"></p-sortIcon></th>
-            <th pSortableColumn="location">Labour<p-sortIcon field="location"></p-sortIcon></th>
+            <th pSortableColumn="location">Foreman<p-sortIcon field="location"></p-sortIcon></th>
             <th pSortableColumn="overtime">Overtime<p-sortIcon field="overtime"></p-sortIcon></th>
             <th pSortableColumn="date">Date<p-sortIcon field="date"></p-sortIcon></th>
             <th></th>
@@ -31,7 +31,7 @@
     <ng-template pTemplate="body" let-product>
         <tr>
             <td>{{product.site.clientName}}</td>
-            <td>{{product.labour.name}}</td>
+            <td>{{product.foreman.name}}</td>
             <td><p-checkbox [disabled]="true" [(ngModel)]="product.overtime" [binary]="true" inputId="binary" ></p-checkbox></td>
             <td>{{product.date | date:'dd/MM/yyyy'}}</td>
             <td style="float: right;">
@@ -57,15 +57,21 @@
             </div>
         </div>
         <div class="card flex justify-content-center">
-            <label style="width: 30%;font-size: 2em;">Labour: </label>
+            <label style="width: 30%;font-size: 2em;">Foreman: </label>
             <div style="width: 50%;float: right;">
-                <p-dropdown *ngIf="labours.length"  [options]="labours" [(ngModel)]="selectedLabour" optionLabel="name" [showClear]="true" placeholder="Select a Labour"></p-dropdown>
+                <p-dropdown *ngIf="foremans.length"  [options]="foremans" [(ngModel)]="selectedForeman" optionLabel="name" [showClear]="true" placeholder="Select a Foreman"></p-dropdown>
             </div>
         </div>
         <div class="card flex justify-content-center">
-            <label style="width: 30%;font-size: 2em;">Overtime: </label>
+            <label style="width: 30%;font-size: 2em;">Labour Type: </label>
             <div style="width: 50%;float: right;">
-                <p-checkbox [(ngModel)]="checked" [binary]="true" inputId="binary" [style]="{'margin':'2em','margin-top':'1em'}"></p-checkbox>
+                <p-dropdown *ngIf="labourTypes.length"  [options]="labourTypes" [(ngModel)]="selectedLabourType" optionLabel="name" [showClear]="true" placeholder="Select a Labour Type"></p-dropdown>
+            </div>
+        </div>
+        <div class="card flex justify-content-center">
+            <label style="width: 30%;font-size: 2em;">No of persons: </label>
+            <div style="width: 50%;float: right;">
+                <input type="number" id="noOfPersons" pInputText [(ngModel)]="noOfPersons" id="noOfPersons" />
             </div>
         </div>
         <div class="card flex justify-content-center">

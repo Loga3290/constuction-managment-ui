@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { Entry } from '../domain/entry';
 import { HttpService } from '../services/httpservice';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Labour } from '../domain/labour';
+import { LabourType } from '../domain/labourType';
 import { Site } from '../domain/Site';
 import { DatePipe } from '@angular/common';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Foreman } from '../domain/foreman';
 interface City {
   name: string;
   code: string;
@@ -23,38 +24,43 @@ export class EntryComponent {
   entry: Entry;
 
   selectedEntrys: Entry[];
-  checked: boolean = false;
+  noOfPersons: number = 0;
   submitted: boolean;
   formGroup: FormGroup | undefined;
   statuses: any[];
   items: any;
   date: Date | undefined;
-  labours: Labour[];
-  selectedLabour: Labour | undefined;
+  labourTypes: LabourType[];
+  foremans: Foreman[] = [];
+  selectedLabourType: LabourType | undefined;
+  selectedForeman: Foreman | undefined;
   sites: Site[];
   selectedSite: Site | undefined;
   cities: City[] | undefined;
   constructor(private datePipe: DatePipe, private httpService: HttpService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
   selectedId : string;
+
   ngOnInit() {
     this.getEntry();
-    this.getLabour();
+    this.getLabourTypes();
     this.getSite();
+    this.getForeman();
 
-    this.cities = [
-      { name: 'New York', code: 'NY' },
-      { name: 'Rome', code: 'RM' },
-      { name: 'London', code: 'LDN' },
-      { name: 'Istanbul', code: 'IST' },
-      { name: 'Paris', code: 'PRS' }
-  ];
 
   this.formGroup = new FormGroup({
       selectedCity: new FormControl<City | null>(null)
   });
 
   }
-
+  private getForeman() {
+    this.httpService.getForemans()
+      .subscribe(
+        res => {
+          this.foremans = res;
+        },
+        err => console.log(err)
+      );
+  }
   private getEntry() {
     this.httpService.getEntrys()
       .subscribe(
@@ -73,11 +79,11 @@ export class EntryComponent {
         err => console.log(err)
       );
   }
-  private getLabour() {
-    this.httpService.getLabours()
+  private getLabourTypes() {
+    this.httpService.getLabourTypes()
       .subscribe(
         res => {
-          this.labours = res;
+          this.labourTypes = res;
         },
         err => console.log(err)
       );
@@ -91,8 +97,9 @@ export class EntryComponent {
 
   editProduct(entry: Entry) {
     this.selectedSite = entry.site;
-    this.selectedLabour = entry.labour
-    this.checked = entry.overtime
+    this.selectedLabourType = entry.labourType
+    this.selectedForeman = entry.foreman
+    this.noOfPersons = entry.noOfPersons
     this.date = new Date(entry.date)
     this.entryDialog = true;
     this.selectedId = entry.id
@@ -121,17 +128,20 @@ export class EntryComponent {
     this.submitted = false;
   }
 
-  saveProduct(id: string) {
+  saveProduct() {
     this.entry = {};
     this.entry.id = this.selectedId;
     this.submitted = true;
     this.entry.site ={};
-    this.entry.labour = {};
+    this.entry.labourType = {};
+    this.entry.foreman = {};
     this.entry.site.id = this.selectedSite.id;
-    this.entry.labour.id = this.selectedLabour.id;
+    this.entry.labourType.id = this.selectedLabourType.id;
     this.entry.date = this.datePipe.transform(this.date,"yyyy-MM-dd")
-    this.entry.overtime = this.checked;
-    
+    this.entry.noOfPersons = this.noOfPersons;
+    this.entry.foreman.id = this.selectedForeman != undefined ? this.selectedForeman.id : null;
+
+
     this.httpService.saveEntrys(this.entry).subscribe(
       res => {
         this.getEntry();
@@ -144,10 +154,11 @@ export class EntryComponent {
         this.entryDialog = false;
         this.entry = {};
         this.selectedId = null;
-        this.selectedLabour = {}
+        this.selectedLabourType = {}
+        this.selectedForeman = {}
         this.selectedSite = {}
         this.date = null;
-        this.checked = false
+        this.noOfPersons = 0
       },
       err => console.log(err)
     )

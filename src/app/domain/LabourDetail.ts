@@ -1,13 +1,16 @@
 export interface LabourDetail {
     
-    siteName?:string;
-    day1?:string;
-    day2?:string;
-    day3?:string;
-    day4?:string;
-    day5?:string;
-    day6?:string;
-    day7?:string;
-    noOfDays?:number;
+    labourType?:string;
+    rate?:number;
+    day1?:number;
+    day2?:number;
+    day3?:number;
+    day4?:number;
+    day5?:number;
+    day6?:number;
+    day7?:number;
+    totalHead?:number;
+    advance?:number;
     amount?: number;
+    finalAmount?: number;
 }

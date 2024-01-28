@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
     showHolisticView: boolean = false;
     router: Router;
     constructor(router:Router) {
-        router.navigate(['/labour']);
+        router.navigate(['/foreman']);
       }
     ngOnInit() {
 

@@ -39,9 +39,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { SupplierComponent } from './supplier/supplier.component';
 import { RouterTestingModule } from "@angular/router/testing";
 import { SiteDetailsComponent } from './site-details/site-details.component';
+import { ForeManComponent } from './fore-man/fore-man.component';
+import { AccordionModule } from 'primeng/accordion';
 
 const appRoutes: Routes = [
-    {path: 'labour', component: LabourComponent},
+    {path: 'foreman', component: ForeManComponent},
+    {path: 'labourType', component: LabourComponent},
     {path: 'site', component: SiteComponent},
     {path: 'material', component: MaterialComponent},
     {path: 'supplier', component: SupplierComponent},
@@ -63,7 +66,8 @@ const appRoutes: Routes = [
         SupplierEntryComponent,
         SupplierHolisticViewComponent,
         SupplierComponent,
-        SiteDetailsComponent
+        SiteDetailsComponent,
+        ForeManComponent
     ],
     imports: [
         BrowserModule,
@@ -93,6 +97,7 @@ const appRoutes: Routes = [
         ListboxModule,
         CheckboxModule,
         RouterTestingModule,
+        AccordionModule,
         RouterModule.forRoot(
             appRoutes, {enableTracing: true}  
             )

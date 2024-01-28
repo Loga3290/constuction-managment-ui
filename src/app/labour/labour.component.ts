@@ -1,7 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Labour } from '../domain/labour';
+import { LabourType } from '../domain/labourType';
 import { HttpService } from '../services/httpservice';
 @Component({
   selector: 'app-labour',
@@ -11,10 +11,10 @@ import { HttpService } from '../services/httpservice';
 export class LabourComponent {
   labourDialog: boolean;
 
-  labours: Labour[] = [];
+  labours: LabourType[] = [];
 
-  labour: Labour;
-  selectedLabours: Labour[];
+  labour: LabourType;
+  selectedLabours: LabourType[];
 
   submitted: boolean;
 
@@ -27,7 +27,7 @@ export class LabourComponent {
   }
 
   private getLabour() {
-    this.productService.getLabours()
+    this.productService.getLabourTypes()
       .subscribe(
         res => {
           this.labours = res;
@@ -42,12 +42,12 @@ export class LabourComponent {
     this.labourDialog = true;
   }
 
-  editProduct(labour: Labour) {
+  editProduct(labour: LabourType) {
     this.labour = labour;
     this.labourDialog = true;
   }
 
-  deleteProduct(labour: Labour) {
+  deleteProduct(labour: LabourType) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete ' + labour.name + '?',
       header: 'Confirm',
@@ -70,7 +70,7 @@ export class LabourComponent {
     this.submitted = false;
   }
 
-  saveProduct() {
+  saveLabourType() {
     
       this.submitted = true;
       if(this.labour.name == null || this.labour.name == undefined 

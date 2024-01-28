@@ -1,31 +1,32 @@
 import { Component } from '@angular/core';
 import { HttpService } from '../services/httpservice';
-import { Labour } from '../domain/labour';
 import { Site } from '../domain/Site';
 import { Entry } from '../domain/entry';
-import { LabourDetail } from '../domain/LabourDetail';
+import { ForemanDetail } from '../domain/foremanDetail';
+import { Foreman } from '../domain/foreman';
+import { LabourDetail } from '../domain/labourDetail';
 
 @Component({
-  selector: 'app-holistic-view',
+  selector: 'app-holistic-view',  
   templateUrl: './holistic-view.component.html',
   styleUrls: ['./holistic-view.component.css']
 })
 export class HolisticViewComponent {
 
 
-  labours: Labour[];
+  foremans: Foreman[];
   sites: Site[];
   selectedSites: Site[];
   selectedSitesString: string[] = [' ', 'site1'];
-  selectedLabours: Labour[];
-  selectedLabour: Labour;
+  selectedForemans: Foreman[];
+  selectedForeman: Foreman;
   entries: Entry[] = [];
-  labourDetails: LabourDetail[] = [];
+  foremanDetails: ForemanDetail[] = [];
   days: Date[] = [];
   constructor(private productService: HttpService) { }
   currentDay: Date = new Date;
   ngOnInit() {
-    this.getLabour();
+    this.getForemans();
     this.getSite();
     var today = new Date();
     this.currentDay = today;
@@ -71,63 +72,87 @@ export class HolisticViewComponent {
       );
   }
 
-  private getLabour() {
-    this.productService.getLabours()
+  private getForemans() {
+    this.productService.getForemans()
       .subscribe(
         res => {
-          this.labours = res;
-          this.selectedLabours = res;
+          this.foremans = res;
+          this.selectedForemans = res;
         },
         err => console.log(err)
       );
   }
 
   generateTable() {
-    this.labourDetails = [];
-    this.productService.getEntries(this.selectedSites, this.selectedLabours, this.days[0], this.days[6])
+    this.foremanDetails = [];
+    this.productService.getEntries(this.selectedSites, this.selectedForemans, this.days[0], this.days[6])
       .subscribe(
         res => {
           this.entries = res;
-          // console.log('entries')
-          console.log(this.days)
+
+          
           this.selectedSites.forEach(selectedSite => {
-            var labourDetail: LabourDetail = {};
-            labourDetail.siteName = selectedSite.clientName;
-            let noOfDays = 0;
+            let foremanDetail: ForemanDetail = {};
+            foremanDetail.labourDetails = [];
+            foremanDetail.siteName = selectedSite.clientName;
+            let selectedSiteEntries = this.entries.filter(entry => {
+              return entry.site.id == selectedSite.id
+            })
+            let distinctLabourTypes = [...new Set(selectedSiteEntries.map(item => item.labourType.name))];
+            let labourTypeMap = new Map();
+            this.entries.forEach(entry => {
+              labourTypeMap.set(entry.labourType.name, entry.labourType.rate)
+            })
+            
+            distinctLabourTypes.forEach( labourType => {
+              let labourDtl : LabourDetail = {};
+              labourDtl.labourType = labourType
+              labourDtl.rate = labourTypeMap.get(labourType)
+              labourDtl.day1 = 0
+              labourDtl.day2 = 0
+              labourDtl.day3 = 0
+              labourDtl.day4 = 0
+              labourDtl.day5 = 0
+              labourDtl.day6 = 0
+              labourDtl.day7 = 0
+              foremanDetail.labourDetails.push(labourDtl)
+            })
+
             this.days.forEach((day, index) => {
-              let resultEntry = this.entries.filter(response => {
+              this.entries.filter(response => {
                   
                   let responseDate = new Date(response.date)
                   responseDate.setHours(0,0,0,0)
                   let dayDate = new Date(day)
                   dayDate.setHours(0,0,0,0)
                   return (responseDate.valueOf() == dayDate.valueOf()
-                  && response.labour.id == this.selectedLabour.id
+                  && response.foreman.id == this.selectedForeman.id
                     && response.site.id == selectedSite.id)
-              });
-              let result = resultEntry.length == 0 ? 'O' : resultEntry[0].overtime ? 'X\\': 'X';
-              if(result == 'X' || result == 'X\\'){
-                noOfDays++;
-                if(resultEntry[0].overtime){
-                  noOfDays += 0.5;
+              }).forEach(entry => {
+                let labourDtl = foremanDetail.labourDetails.filter(dtl => entry.labourType.name == dtl.labourType)[0]
+               
+                switch (index) {
+                  case 0: labourDtl.day1 = entry.noOfPersons; break;
+                  case 1: labourDtl.day2 = entry.noOfPersons; break;
+                  case 2: labourDtl.day3 = entry.noOfPersons; break;
+                  case 3: labourDtl.day4 = entry.noOfPersons; break;
+                  case 4: labourDtl.day5 = entry.noOfPersons; break;
+                  case 5: labourDtl.day6 = entry.noOfPersons; break;
+                  case 6: labourDtl.day7 = entry.noOfPersons; break;
                 }
-              }
-
-              switch (index) {
-                case 0: labourDetail.day1 = result; break;
-                case 1: labourDetail.day2 = result; break;
-                case 2: labourDetail.day3 = result; break;
-                case 3: labourDetail.day4 = result; break;
-                case 4: labourDetail.day5 = result; break;
-                case 5: labourDetail.day6 = result; break;
-                case 6: labourDetail.day7 = result; break;
-              }
+              });
+              
             })
-            labourDetail.noOfDays = noOfDays;
-            labourDetail.amount = noOfDays * this.selectedLabour.rate;
-            this.labourDetails.push(labourDetail)
-          }
-          )
+            this.foremanDetails.push(foremanDetail)
+          })
+          
+          this.foremanDetails.forEach(foremanDtl => {
+            foremanDtl.labourDetails.forEach(labourDtl =>{
+              labourDtl.totalHead = labourDtl.day1 + labourDtl.day2 + labourDtl.day3 + labourDtl.day4 + labourDtl.day5 + labourDtl.day6 + labourDtl.day7
+              labourDtl.amount = labourDtl.totalHead * labourDtl.rate
+            })
+          }) 
+          console.log(JSON.stringify(this.foremanDetails));
         });
   }
 }

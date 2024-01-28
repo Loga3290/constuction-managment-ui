@@ -1,9 +1,9 @@
 import { Site } from "./Site";
-import { Labour } from "./labour";
+import { LabourType } from "./labourType";
 
 export interface EntryRequest {
     siteIds?:string[];
-    labourIds?:string[];
+    foremanIds?:string[];
     fromDate?:string;
     toDate?:string;
 }

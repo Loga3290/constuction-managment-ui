@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Labour } from '../domain/labour';
+import { LabourType } from '../domain/labourType';
 import { Observable } from 'rxjs';
 import { Site } from '../domain/Site';
 import { Entry } from '../domain/entry';
@@ -10,11 +10,25 @@ import { SupplierEntry } from '../domain/supplierentry';
 import { Material } from '../domain/material';
 import { Supplier } from '../domain/supplier';
 import { SupplierEntryRequest } from '../domain/supplierentryrequest';
+import { environment } from 'src/environments/environment';
+import { Foreman } from '../domain/foreman';
 
 @Injectable()
 export class HttpService {
+
+    baseUrl = environment.serviceBaseUrl;
+    saveForemans(foreman: Foreman): Observable<any> {
+        return this.http.post<any>(environment.serviceBaseUrl + '/foreman', foreman);
+    }
+
+    deleteForeman(id: string): Observable<any> {
+        return this.http.delete<any>(environment.serviceBaseUrl + '/foreman/id/' + id);
+    }
+    getForemans(): Observable<Foreman[]> {
+        return this.http.get<any>(environment.serviceBaseUrl + '/foreman/all');
+    }
     deleleSupplierEntry(id: string) {
-        return this.http.delete<any>('http://localhost:8080/supplierentry/id/' + id);
+        return this.http.delete<any>( environment.serviceBaseUrl + '/supplierentry/id/' + id);
     }
     getSupplierEntries(sites: Site[], selectedSuppliers: Supplier[], fromDate: Date, toDate: Date) {
         let entryRequest : SupplierEntryRequest = {};
@@ -22,94 +36,94 @@ export class HttpService {
         entryRequest.toDate = getDateString(toDate);
         entryRequest.siteIds = sites.map(site => site.id);
         entryRequest.supplierIds = selectedSuppliers.map(suppplier => suppplier.id);
-        return this.http.post<any>('http://localhost:8080/supplierentries', entryRequest);
+        return this.http.post<any>(environment.serviceBaseUrl + '/supplierentries', entryRequest);
     }
     getSupplierEntriesForSite(siteId: string) {
         const options = siteId ?
         { params: new HttpParams().set('siteId', siteId) } : {};
-        return this.http.get<any>('http://localhost:8080/supplierentries', options);
+        return this.http.get<any>(environment.serviceBaseUrl + '/supplierentries', options);
     }
     getSupplierEntrys() {
-        return this.http.get<any>('http://localhost:8080/supplierentry/all');
+        return this.http.get<any>(environment.serviceBaseUrl + '/supplierentry/all');
     }
     saveSuppliers(supplier: Supplier) {
-        return this.http.post<any>('http://localhost:8080/supplier', supplier);
+        return this.http.post<any>(environment.serviceBaseUrl + '/supplier', supplier);
     }
     deleteSupplier(id: string) {
-        return this.http.delete<any>('http://localhost:8080/supplier/id/' + id);
+        return this.http.delete<any>(environment.serviceBaseUrl + '/supplier/id/' + id);
     }
     getSuppliers() {
-        return this.http.get<any>('http://localhost:8080/supplier/all');
+        return this.http.get<any>(environment.serviceBaseUrl + '/supplier/all');
     }
     saveMaterials(material: Material) {
-        return this.http.post<any>('http://localhost:8080/material', material);
+        return this.http.post<any>(environment.serviceBaseUrl + '/material', material);
     }
     deleteMaterial(id: string) {
-        return this.http.delete<any>('http://localhost:8080/material/id/' + id);
+        return this.http.delete<any>(environment.serviceBaseUrl + '/material/id/' + id);
     }
     getMaterials() {
-        return this.http.get<any>('http://localhost:8080/material/all');
+        return this.http.get<any>(environment.serviceBaseUrl + '/material/all');
     }
     saveSupplierEntrys(entry: SupplierEntry) {
-        return this.http.post<any>('http://localhost:8080/supplierentry', entry);
+        return this.http.post<any>(environment.serviceBaseUrl + '/supplierentry', entry);
     }
 
     constructor(private http: HttpClient) { }
 
-    getLabours(): Observable<Labour[]> {
-        return this.http.get<any>('http://localhost:8080/labour/all');
+    getLabourTypes(): Observable<LabourType[]> {
+        return this.http.get<any>(environment.serviceBaseUrl + '/labourType/all');
 
     }
-    saveLabours(labour: Labour): Observable<any> {
-        return this.http.post<any>('http://localhost:8080/labour', labour);
+    saveLabours(labour: LabourType): Observable<any> {
+        return this.http.post<any>(environment.serviceBaseUrl + '/labourType', labour);
     }
 
     deleteLabour(id: string): Observable<any> {
-        return this.http.delete<any>('http://localhost:8080/labour/id/' + id);
+        return this.http.delete<any>(environment.serviceBaseUrl + '/labourType/id/' + id);
     }
 
-    editLabour(labour: Labour) {
-        return this.http.put<any>('http://localhost:8080/labour', labour);
+    editLabour(labour: LabourType) {
+        return this.http.put<any>(environment.serviceBaseUrl + '/labourType', labour);
     }
 
     getSites(): Observable<Site[]> {
-        return this.http.get<any>('http://localhost:8080/site/all');
+        return this.http.get<any>(environment.serviceBaseUrl + '/site/all');
     }
 
     saveSites(site: Site): Observable<any> {
-        return this.http.post<any>('http://localhost:8080/site', site);
+        return this.http.post<any>(environment.serviceBaseUrl + '/site', site);
     }
 
     deleteSite(id: string): Observable<any> {
-        return this.http.delete<any>('http://localhost:8080/site/id/' + id);
+        return this.http.delete<any>(environment.serviceBaseUrl + '/site/id/' + id);
     }
 
     editSite(site: Site) {
-        return this.http.put<any>('http://localhost:8080/site', site);
+        return this.http.put<any>(environment.serviceBaseUrl + '/site', site);
     }
 
     getEntrys(): Observable<Entry[]> {
-        return this.http.get<any>('http://localhost:8080/entry/all');
+        return this.http.get<any>(environment.serviceBaseUrl + '/entry/all');
     }
-    getEntries(sites: Site[], labours: Labour[], fromDate : Date, toDate : Date): Observable<Entry[]> {
+    getEntries(sites: Site[], labours: Foreman[], fromDate : Date, toDate : Date): Observable<Entry[]> {
         let entryRequest : EntryRequest = {};
         entryRequest.fromDate = getDateString(fromDate);
         entryRequest.toDate = getDateString(toDate);
         entryRequest.siteIds = sites.map(site => site.id);
-        entryRequest.labourIds = labours.map(labour => labour.id);
-        return this.http.post<any>('http://localhost:8080/entries', entryRequest);
+        entryRequest.foremanIds = labours.map(labour => labour.id);
+        return this.http.post<any>(environment.serviceBaseUrl + '/entries', entryRequest);
     }
 
     saveEntrys(entry: Entry): Observable<any> {
-        return this.http.post<any>('http://localhost:8080/entry', entry);
+        return this.http.post<any>(environment.serviceBaseUrl + '/entry', entry);
     }
 
     deleteEntry(id: string): Observable<any> {
-        return this.http.delete<any>('http://localhost:8080/entry/id/' + id);
+        return this.http.delete<any>(environment.serviceBaseUrl + '/entry/id/' + id);
     }
 
     editEntry(entry: Entry) {
-        return this.http.put<any>('http://localhost:8080/entry', entry);
+        return this.http.put<any>(environment.serviceBaseUrl + '/entry', entry);
     }
 }
 

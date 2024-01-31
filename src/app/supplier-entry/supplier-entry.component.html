@@ -23,6 +23,9 @@
         <tr>
             <th pSortableColumn="name">Client Name<p-sortIcon field="name"></p-sortIcon></th>
             <th pSortableColumn="location">Supplier<p-sortIcon field="location"></p-sortIcon></th>
+            <th pSortableColumn="date">Material<p-sortIcon field="date"></p-sortIcon></th>
+            <th pSortableColumn="date">Units<p-sortIcon field="date"></p-sortIcon></th>
+            <th pSortableColumn="date">Amount<p-sortIcon field="date"></p-sortIcon></th>
             <th pSortableColumn="date">Date<p-sortIcon field="date"></p-sortIcon></th>
             <th></th>
         </tr>
@@ -31,6 +34,9 @@
         <tr>
             <td>{{product.site.clientName}}</td>
             <td>{{product.supplier.name}}</td>
+            <td>{{product.material.name}}</td>
+            <td>{{product.units}}</td>
+            <td>{{product.billAmount}}</td>
             <td>{{product.date | date:'dd/MM/yyyy'}}</td>
             <td style="float: right;">
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(product)"></button>
@@ -70,6 +76,12 @@
             <label style="width: 30%;font-size: 2em;">Units: </label>
             <div style="width: 50%;float: right;">
                 <p-inputNumber [(ngModel)]="units" mode="decimal" inputId="withoutgrouping" [useGrouping]="false"> </p-inputNumber>
+            </div>
+        </div>
+        <div class="card flex justify-content-center">
+            <label style="width: 30%;font-size: 2em;">Amount: </label>
+            <div style="width: 50%;float: right;">
+                <p-inputNumber [(ngModel)]="billAmount" mode="decimal" inputId="withoutgrouping" [useGrouping]="false"> </p-inputNumber>
             </div>
         </div>
         <div class="card flex justify-content-center">

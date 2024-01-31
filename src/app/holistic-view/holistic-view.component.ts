@@ -147,12 +147,14 @@ export class HolisticViewComponent {
           })
           
           this.foremanDetails.forEach(foremanDtl => {
+            let total = 0;
             foremanDtl.labourDetails.forEach(labourDtl =>{
               labourDtl.totalHead = labourDtl.day1 + labourDtl.day2 + labourDtl.day3 + labourDtl.day4 + labourDtl.day5 + labourDtl.day6 + labourDtl.day7
               labourDtl.amount = labourDtl.totalHead * labourDtl.rate
+              total += labourDtl.amount;
             })
+            foremanDtl.total = total;
           }) 
-          console.log(JSON.stringify(this.foremanDetails));
         });
   }
 }

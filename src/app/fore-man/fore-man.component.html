@@ -5,6 +5,9 @@
     <ng-template pTemplate="left">
         <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
     </ng-template>
+    <ng-template pTemplate="right">
+        <button pButton pRipple label="labourTypes" class="p-button-success mr-2" [routerLink]="'/labourType'"></button>
+    </ng-template>
 </p-toolbar>
 <p-table #dt *ngIf="foremans.length != 0" [value]="foremans" [rows]="10" [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']"
     [(selection)]="selectedForemans" [rowHover]="true" dataKey="id"

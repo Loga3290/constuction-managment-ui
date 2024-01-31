@@ -32,6 +32,7 @@ export class SupplierEntryComponent {
   materials: Material[];
   selectedMaterial: Material | undefined;
   units: number;
+  billAmount: number;
   sites: Site[];
   selectedSite: Site | undefined;
   selectedId: string;
@@ -129,6 +130,7 @@ export class SupplierEntryComponent {
     this.entry.date = this.datePipe.transform(this.date,"yyyy-MM-dd")
     this.entry.material = this.selectedMaterial;
     this.entry.units = this.units;
+    this.entry.billAmount = this.billAmount;
     this.httpService.saveSupplierEntrys(this.entry).subscribe(
       res => {
         this.getEntry();
@@ -146,6 +148,7 @@ export class SupplierEntryComponent {
         this.selectedSupplier = {};
         this.units = null;
         this.date = null;
+        this.billAmount = null;
       },
       err => console.log(err)
     )

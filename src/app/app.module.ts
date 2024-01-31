@@ -41,7 +41,7 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { SiteDetailsComponent } from './site-details/site-details.component';
 import { ForeManComponent } from './fore-man/fore-man.component';
 import { AccordionModule } from 'primeng/accordion';
-
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 const appRoutes: Routes = [
     {path: 'foreman', component: ForeManComponent},
     {path: 'labourType', component: LabourComponent},
@@ -98,6 +98,7 @@ const appRoutes: Routes = [
         CheckboxModule,
         RouterTestingModule,
         AccordionModule,
+        ProgressSpinnerModule,
         RouterModule.forRoot(
             appRoutes, {enableTracing: true}  
             )

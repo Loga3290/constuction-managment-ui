@@ -95,9 +95,8 @@ export class SupplierHolisticViewComponent {
       materialDetail.material = entry.material.name;
       materialDetail.specification = entry.material.specification;
       materialDetail.date = entry.date;
-      materialDetail.rate = entry.material.rate;
       materialDetail.units = entry.units
-      materialDetail.amount = materialDetail.rate * materialDetail.units;
+      materialDetail.amount = entry.billAmount
       this.materialDetails.push(materialDetail);
     })
 
@@ -112,7 +111,6 @@ export class SupplierHolisticViewComponent {
             var supplierDetail: SupplierDetail = {};
             supplierDetail.siteName = selectedSite.clientName;
             supplierDetail.siteId = selectedSite.id
-            let noOfDays = 0;
             supplierDetail.amount = 0;
             this.days.forEach((day, index) => {
               let resultSupplierEntry = this.entries.filter(response => {
@@ -130,7 +128,7 @@ export class SupplierHolisticViewComponent {
               let result = resultSupplierEntry.length == 0 ? 'O' : 'X';
               if(result == 'X'){
                 resultSupplierEntry.forEach(entry => {
-                  supplierDetail.amount += entry.material.rate * entry.units;
+                  supplierDetail.amount += entry.billAmount;
                 })
               }
 

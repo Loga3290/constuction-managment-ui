@@ -21,7 +21,6 @@
     <ng-template pTemplate="header">
         <tr>
             <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
-            <th pSortableColumn="location">Location <p-sortIcon field="location"></p-sortIcon></th>
             <th pSortableColumn="rate">Rate <p-sortIcon field="rate"></p-sortIcon></th>
             <th></th>
         </tr>
@@ -29,7 +28,6 @@
     <ng-template pTemplate="body" let-product>
         <tr>
             <td>{{product.name}}</td>
-            <td>{{product.location}}</td>
             <td>{{product.rate}}</td>
             <td style="padding-left: 5%;">
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(product)"></button>

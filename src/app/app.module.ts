@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -42,6 +42,7 @@ import { SiteDetailsComponent } from './site-details/site-details.component';
 import { ForeManComponent } from './fore-man/fore-man.component';
 import { AccordionModule } from 'primeng/accordion';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { LoaderInterceptor } from './services/loaderInterceptor';
 const appRoutes: Routes = [
     {path: 'foreman', component: ForeManComponent},
     {path: 'labourType', component: LabourComponent},
@@ -103,7 +104,7 @@ const appRoutes: Routes = [
             appRoutes, {enableTracing: true}  
             )
     ],
-    providers: [ConfirmationService, DatePipe],
+    providers: [ConfirmationService, DatePipe, { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

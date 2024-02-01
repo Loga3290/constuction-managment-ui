@@ -85,7 +85,7 @@ export class HolisticViewComponent {
 
   generateTable() {
     this.foremanDetails = [];
-    this.productService.getEntries(this.selectedSites, this.selectedForemans, this.days[0], this.days[6])
+    this.productService.getEntries(this.selectedSites, [this.selectedForeman], this.days[0], this.days[6])
       .subscribe(
         res => {
           this.entries = res;
@@ -96,7 +96,7 @@ export class HolisticViewComponent {
             foremanDetail.labourDetails = [];
             foremanDetail.siteName = selectedSite.clientName;
             let selectedSiteEntries = this.entries.filter(entry => {
-              return entry.site.id == selectedSite.id
+              return entry.site.id == selectedSite.id 
             })
             let distinctLabourTypes = [...new Set(selectedSiteEntries.map(item => item.labourType.name))];
             let labourTypeMap = new Map();

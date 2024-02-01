@@ -3,8 +3,11 @@
     <h1 style="text-align: center;vertical-align: middle;font-size: 3em">Annai Shelters Pvt Ltd</h1>
     <br />
 </div>
-
-<div style="width: 100%;margin-top: 1%;">
+  <div class="card flex justify-content-center" *ngIf="isLoading| async">
+    <p-progressSpinner></p-progressSpinner>
+</div>
+<div class="spinner_overlay" *ngIf="isLoading| async"></div>
+<div style="width: 100%;margin-top: 1%;" >
     <div class="card flex justify-content-center" style="width: 20%;float: left;">
         <div class="card">
             <div style="width: 100%;">
@@ -33,13 +36,13 @@
             <br/>
             <div style="width: 100%;">
                 <p-toast></p-toast>
-                <button type="button" pButton pRipple [routerLink]="'/labourentry'" label="LabourEntry"
+                <button type="button" pButton pRipple [routerLink]="'/labourentry'" label="Foreman-Entry"
                     class="p-button-success" style="width: 100%;"></button>
             </div>
             <br/>
             <div style="width: 100%;">
                 <p-toast></p-toast>
-                <button type="button" pButton pRipple [routerLink]="'/supplierentry'" label="SupplierEntry"
+                <button type="button" pButton pRipple [routerLink]="'/supplierentry'" label="Supplier-Entry"
                     class="p-button-success" style="width: 100%;"></button>
             </div>
             <br/>

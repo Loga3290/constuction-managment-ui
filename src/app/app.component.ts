@@ -4,6 +4,8 @@ import { HttpService } from './services/httpservice';
 import { MenuItem } from 'primeng/api';
 
 import { Router } from '@angular/router';
+import { LoaderService } from './services/loader.service';
+import { Subject } from 'rxjs';
 
 @Component({
     selector: 'app-root',
@@ -12,16 +14,18 @@ import { Router } from '@angular/router';
     providers: [ConfirmationService, MessageService, HttpService]
 })
 export class AppComponent implements OnInit {
-    
+    isLoading: Subject<boolean>;
     menuItems: MenuItem[];
     showLabour: boolean = true;
     showEntry: boolean = false;
     showSite: boolean = false;
     showHolisticView: boolean = false;
     router: Router;
-    constructor(router:Router) {
+    constructor(router:Router, private loader: LoaderService ) {
         router.navigate(['/foreman']);
+        this.isLoading = this.loader.isLoading
       }
+      
     ngOnInit() {
 
         

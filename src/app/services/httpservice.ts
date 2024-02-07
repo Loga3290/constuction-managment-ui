@@ -12,10 +12,12 @@ import { Supplier } from '../domain/supplier';
 import { SupplierEntryRequest } from '../domain/supplierentryrequest';
 import { environment } from 'src/environments/environment';
 import { Foreman } from '../domain/foreman';
+import { ForemanAdvance } from '../domain/foremanadvance';
 
 @Injectable()
 export class HttpService {
-
+   
+    
     baseUrl = environment.serviceBaseUrl;
     saveForemans(foreman: Foreman): Observable<any> {
         return this.http.post<any>(environment.serviceBaseUrl + '/foreman', foreman);
@@ -28,10 +30,10 @@ export class HttpService {
         return this.http.get<any>(environment.serviceBaseUrl + '/foreman/all');
     }
     deleleSupplierEntry(id: string) {
-        return this.http.delete<any>( environment.serviceBaseUrl + '/supplierentry/id/' + id);
+        return this.http.delete<any>(environment.serviceBaseUrl + '/supplierentry/id/' + id);
     }
     getSupplierEntries(sites: Site[], selectedSuppliers: Supplier[], fromDate: Date, toDate: Date) {
-        let entryRequest : SupplierEntryRequest = {};
+        let entryRequest: SupplierEntryRequest = {};
         entryRequest.fromDate = getDateString(fromDate);
         entryRequest.toDate = getDateString(toDate);
         entryRequest.siteIds = sites.map(site => site.id);
@@ -40,7 +42,7 @@ export class HttpService {
     }
     getSupplierEntriesForSite(siteId: string) {
         const options = siteId ?
-        { params: new HttpParams().set('siteId', siteId) } : {};
+            { params: new HttpParams().set('siteId', siteId) } : {};
         return this.http.get<any>(environment.serviceBaseUrl + '/supplierentries', options);
     }
     getSupplierEntrys() {
@@ -105,8 +107,8 @@ export class HttpService {
     getEntrys(): Observable<Entry[]> {
         return this.http.get<any>(environment.serviceBaseUrl + '/entry/all');
     }
-    getEntries(sites: Site[], labours: Foreman[], fromDate : Date, toDate : Date): Observable<Entry[]> {
-        let entryRequest : EntryRequest = {};
+    getEntries(sites: Site[], labours: Foreman[], fromDate: Date, toDate: Date): Observable<Entry[]> {
+        let entryRequest: EntryRequest = {};
         entryRequest.fromDate = getDateString(fromDate);
         entryRequest.toDate = getDateString(toDate);
         entryRequest.siteIds = sites.map(site => site.id);
@@ -125,16 +127,28 @@ export class HttpService {
     editEntry(entry: Entry) {
         return this.http.put<any>(environment.serviceBaseUrl + '/entry', entry);
     }
+
+    getForemanAdvances(): Observable<ForemanAdvance[]> {
+        return this.http.get<any>(environment.serviceBaseUrl + '/foreman/advance/all');
+
+    }
+    
+    deleteForemanAdvance(id: string): Observable<any> {
+        return this.http.delete<any>(environment.serviceBaseUrl + '/foreman/id/' + id);
+    }
+    saveForemanAdvances(foreman: ForemanAdvance): Observable<any> {
+        return this.http.post<any>(environment.serviceBaseUrl + '/foreman/advance', foreman);
+    }
 }
 
 function getDateString(fromDate: Date): string {
-    
+
     const yyyy = fromDate.getFullYear();
     let mm = fromDate.getMonth() + 1; // Months start at 0!
     let dd = fromDate.getDate();
 
-    let ddString = (dd < 10) ?  String('0' + dd) : String(dd);
-    let mmString = (mm < 10) ?  String('0' + mm) : String(mm);
+    let ddString = (dd < 10) ? String('0' + dd) : String(dd);
+    let mmString = (mm < 10) ? String('0' + mm) : String(mm);
 
     return ddString + '/' + mmString + '/' + yyyy;
 }

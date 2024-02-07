@@ -1,0 +1,78 @@
+<div class="card">
+    <p-messages></p-messages>
+</div>
+<p-toolbar styleClass="mb-4">
+    <ng-template pTemplate="left">
+        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+    </ng-template>
+    
+</p-toolbar>
+<p-table #dt *ngIf="foremanAdvances.length != 0" [value]="foremanAdvances" [rows]="10" [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']"
+    [(selection)]="selectedForemanAdvances" [rowHover]="true" dataKey="id"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+            <h2 class="m-0">Manage Foreman Advances</h2>
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
+            </span>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+            <th pSortableColumn="Amount">Amount <p-sortIcon field="Amount"></p-sortIcon></th>
+            <th pSortableColumn="location">Date <p-sortIcon field="location"></p-sortIcon></th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+        <tr>
+            <td>{{product.foreman.name}}</td>
+            <td>{{product.amount}}</td>
+            <td>{{product.date | date:'dd/MM/yyyy'}}</td>
+            <td style="padding-left: 5%;">
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editForemanAdvance(product)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteForemanAdvance(product)"></button>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+            In total there are {{foremanAdvances ? foremanAdvances.length : 0 }} foremanAdvances.
+        </div>
+    </ng-template>
+</p-table>
+
+<p-dialog [(visible)]="foremanAdvanceDialog" [style]="{width: '450px'}" header="Foreman advance Details" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="card flex justify-content-center">
+            <label style="width: 30%;font-size: 2em;">Foreman:</label>
+            <div style="width: 50%;float: right;margin-left: 1em;">
+                <p-dropdown *ngIf="foremans.length"  [options]="foremans" [(ngModel)]="selectedForeman" optionLabel="name" [showClear]="true" placeholder="Select a Foreman"></p-dropdown>
+            </div>
+        </div>
+        <br>
+        <div class="card flex justify-content-center">
+            <label style="width: 30%;font-size: 2em;">Date: </label>
+            <div style="width: 50%;float: right;">
+            <p-calendar [touchUI]="true"  [showButtonBar]="true" [(ngModel)]="foremanAdvance.date"></p-calendar>
+            </div>
+        </div>
+        <br>
+        <div class="card flex justify-content-center">
+            <label style="width: 30%;font-size: 2em;" for="amount">Amount</label>
+            <div style="width: 50%;float: right;">
+                <input id="amount" pInputText [(ngModel)]="foremanAdvance.amount" id="amount" />
+            </div>
+        </div>
+        
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveForemanAdvance()"></button>
+    </ng-template>
+</p-dialog>
+<p-confirmDialog [style]="{width: '450px'}" ></p-confirmDialog>

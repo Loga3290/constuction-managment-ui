@@ -43,6 +43,7 @@ import { ForeManComponent } from './fore-man/fore-man.component';
 import { AccordionModule } from 'primeng/accordion';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { LoaderInterceptor } from './services/loaderInterceptor';
+import { FormanAdvanceComponent } from './forman-advance/forman-advance.component';
 const appRoutes: Routes = [
     {path: 'foreman', component: ForeManComponent},
     {path: 'labourType', component: LabourComponent},
@@ -53,6 +54,7 @@ const appRoutes: Routes = [
     {path: 'supplierentry', component: SupplierEntryComponent},
     {path: 'holisticview', component: HolisticViewComponent},
     {path: 'supplierholisticview', component: SupplierHolisticViewComponent},
+    {path: 'foremanadvance', component: FormanAdvanceComponent},
     {path: 'sitedetails/:id', component: SiteDetailsComponent}
   ];
 
@@ -68,7 +70,8 @@ const appRoutes: Routes = [
         SupplierHolisticViewComponent,
         SupplierComponent,
         SiteDetailsComponent,
-        ForeManComponent
+        ForeManComponent,
+        FormanAdvanceComponent
     ],
     imports: [
         BrowserModule,

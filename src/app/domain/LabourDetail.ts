@@ -10,7 +10,5 @@ export interface LabourDetail {
     day6?:number;
     day7?:number;
     totalHead?:number;
-    advance?:number;
     amount?: number;
-    finalAmount?: number;
 }

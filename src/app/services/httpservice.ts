@@ -16,8 +16,7 @@ import { ForemanAdvance } from '../domain/foremanadvance';
 
 @Injectable()
 export class HttpService {
-   
-    
+
     baseUrl = environment.serviceBaseUrl;
     saveForemans(foreman: Foreman): Observable<any> {
         return this.http.post<any>(environment.serviceBaseUrl + '/foreman', foreman);
@@ -25,6 +24,11 @@ export class HttpService {
 
     deleteForeman(id: string): Observable<any> {
         return this.http.delete<any>(environment.serviceBaseUrl + '/foreman/id/' + id);
+    }
+    getForemanAdvancesForForeman(id: string): Observable<Foreman[]> {
+        let params = new HttpParams();
+        params = params.append('foremanId', id);
+        return this.http.get<any>(environment.serviceBaseUrl + '/foreman/advance', {params: params});
     }
     getForemans(): Observable<Foreman[]> {
         return this.http.get<any>(environment.serviceBaseUrl + '/foreman/all');
@@ -132,7 +136,7 @@ export class HttpService {
         return this.http.get<any>(environment.serviceBaseUrl + '/foreman/advance/all');
 
     }
-    
+
     deleteForemanAdvance(id: string): Observable<any> {
         return this.http.delete<any>(environment.serviceBaseUrl + '/foreman/id/' + id);
     }
